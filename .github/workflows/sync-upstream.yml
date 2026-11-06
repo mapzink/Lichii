@@ -1,0 +1,23 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Automatically runs every day at midnight UTC
+  workflow_dispatch: # Allows you to manually click "Run workflow" to sync instantly
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync upstream changes
+        set: +e
+        run: |
+          # Syncs your nx2 branch directly from the parent zortos293 repo
+          gh repo sync mapzink/Lichii -b nx2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
